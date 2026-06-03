@@ -17,6 +17,7 @@ limitations under the License.
 package environment
 
 import (
+	"cmp"
 	"context"
 	"fmt"
 	"os"
@@ -39,9 +40,16 @@ import (
 	karpv1 "sigs.k8s.io/karpenter/pkg/apis/v1"
 )
 
+var (
+	// KarpenterNamespace is the namespace the Karpenter controller runs in.
+	// Override with KARPENTER_NAMESPACE.
+	KarpenterNamespace = cmp.Or(os.Getenv("KARPENTER_NAMESPACE"), "karpenter-system")
+	// KarpenterDeployment is the name of the Karpenter controller Deployment.
+	// Override with KARPENTER_DEPLOYMENT.
+	KarpenterDeployment = cmp.Or(os.Getenv("KARPENTER_DEPLOYMENT"), "karpenter")
+)
+
 const (
-	KarpenterNamespace  = "karpenter-system"
-	KarpenterDeployment = "karpenter"
 	// TestNamespace is the namespace used by all e2e test suites for workloads.
 	TestNamespace = "karpenter-e2e-test"
 
